@@ -35,19 +35,20 @@ contains
 
     elemental function check(x) result(ok)
         integer, intent(in) :: x
-        integer :: cur, ok
+        integer :: cur
+        logical :: ok
 
         cur = x
-        ok = 1
+        ok = .true.
         if (.not. is_prime(x)) then
-            ok = 0
+            ok = .false.
             return
         end if
         cur = rotate(cur)
 
         do while (cur /= x)
             if (.not. is_prime(cur)) then
-                ok = 0
+                ok = .false.
                 return
             end if
             cur = rotate(cur)
@@ -62,5 +63,5 @@ program p35
     integer, parameter :: MAX = 1000000
     integer :: i
 
-    print *, sum(check([(i, i = 1, MAX - 1)]))
+    print *, count(check([(i, i = 1, MAX - 1)]))
 end program p35
