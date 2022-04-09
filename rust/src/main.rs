@@ -8,5 +8,5 @@ mod benchmark;
 mod problems;
 
 fn main() {
-    problems::p51::solve();
+    problems::p630::solve();
 }
