@@ -177,15 +177,6 @@ pub fn euclid(mut a: i64, mut b: i64) -> (i64, i64, i64) {
     (a, x, y)
 }
 
-pub fn neg_mod(a: i64, b: i64) -> i64 {
-    if a >= 0 {
-        a % b
-    }
-    else {
-        b - (-a % b)
-    }
-}
-
 pub fn isqrt(x: usize) -> (usize, bool) {
     let s = (x as f64).sqrt().floor() as usize;
     (s, s * s == x)
@@ -310,12 +301,6 @@ mod test {
         assert_eq!(Factors::of(1).collect::<Vec<_>>(), vec![1]);
         assert_eq!(Factors::of(7).collect::<Vec<_>>(), vec![1, 7]);
         assert_eq!(Factors::of(36).collect::<Vec<_>>(), vec![1, 36, 2, 18, 3, 12, 4, 9, 6]);
-    }
-
-    #[test]
-    fn neg_mod() {
-        assert_eq!(super::neg_mod(14, 6), 2);
-        assert_eq!(super::neg_mod(-14, 6), 4);
     }
 
     #[test]

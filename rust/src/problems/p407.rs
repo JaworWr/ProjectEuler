@@ -1,4 +1,4 @@
-use crate::utils::{Sieve, euclid, neg_mod};
+use crate::utils::{Sieve, euclid};
 use crate::benchmark::{benchmark, Progress};
 use itertools::Itertools;
 
@@ -36,8 +36,8 @@ fn solve_x(sieve: &Sieve, x: usize) -> usize {
             let b = b as i64;
             let (d, k, l) = euclid(a, b);
             assert_eq!(d, 1);
-            let k = neg_mod(k, b);
-            let l = neg_mod(l, a);           
+            let k = k.rem_euclid(b);
+            let l =l.rem_euclid(a);           
             (k * a).max(l * b) as usize
         })
         .max()
