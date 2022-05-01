@@ -1,14 +1,17 @@
-pub mod p407;
-pub mod p346;
-pub mod p357;
-pub mod p203;
-pub mod p516;
-pub mod p518;
-pub mod p216;
-pub mod p76;
-pub mod p77;
-pub mod p243;
-pub mod p21;
-pub mod p51;
-pub mod p630;
-pub mod p172;
+mod p407;
+mod p346;
+mod p357;
+mod p203;
+mod p516;
+mod p518;
+mod p216;
+mod p76;
+mod p77;
+mod p243;
+mod p21;
+mod p51;
+mod p630;
+mod p172;
+mod p500;
+
+pub mod current_problem { pub use super::p500::solve; }
