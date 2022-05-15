@@ -63,9 +63,13 @@ module graph
     use stdlib_sorting, only: int_size, sort_index
     implicit none
 
-    type edge
+    type edge_t
         integer :: a, b, w
     end type
+
+    interface edge_t
+        module procedure edge_new
+    end interface
 
     interface operator (.eq.)
         module procedure edge_eq
@@ -74,42 +78,44 @@ module graph
     interface operator (.ne.)
         module procedure edge_ne
     end interface
+
+    private edge_new, edge_eq, edge_ne
 contains
+    pure function edge_new(a, b, w) result(edge)
+        integer, value :: a, b, w
+        type(edge_t) :: edge
+        integer :: tmp
+
+        if (a .gt. b) then
+            tmp = a
+            a = b
+            b = tmp
+        end if
+        edge%a = a
+        edge%b = b
+        edge%w = w
+    end
+
     elemental function edge_eq(e1, e2)
-        type(edge), intent(in) :: e1, e2
+        type(edge_t), intent(in) :: e1, e2
         integer :: a1, b1, a2, b2
         logical :: edge_eq
 
-        if (e1%a .le. e1%b) then
-            a1 = e1%a
-            b1 = e1%b
-        else
-            a1 = e1%b
-            b1 = e1%a
-        end if
-        if (e2%a .le. e2%b) then
-            a2 = e2%a
-            b2 = e2%b
-        else
-            a2 = e2%b
-            b2 = e2%a
-        end if
-
         edge_eq = .true.
-        edge_eq = edge_eq .and. a1 .eq. a2
-        edge_eq = edge_eq .and. b1 .eq. b2
+        edge_eq = edge_eq .and. e1%a .eq. e2%a
+        edge_eq = edge_eq .and. e1%b .eq. e2%b
         edge_eq = edge_eq .and. e1%w .eq. e2%w
     end
 
     elemental function edge_ne(e1, e2)
-        type(edge), intent(in) :: e1, e2
+        type(edge_t), intent(in) :: e1, e2
         logical :: edge_ne
 
         edge_ne = .not. edge_eq(e1, e2)
     end
 
     subroutine print_edges(edges)
-        type(edge), dimension(:), allocatable :: edges
+        type(edge_t), dimension(:), allocatable :: edges
         integer :: i
 
         do i = 1, size(edges)
@@ -118,17 +124,17 @@ contains
     end
 
     function test_case_edges() result(edges)
-        type(edge), dimension(:), allocatable :: edges
+        type(edge_t), dimension(:), allocatable :: edges
         
         edges = [ &
-            edge(1, 3, 12), edge(3, 6, 31), edge(6, 7, 27), edge(7, 5, 11), edge(2, 5, 20), edge(1, 2, 16), &
-            edge(1, 4, 21), edge(3, 4, 28), edge(6, 4, 19), edge(7, 4, 23), edge(5, 4, 18), edge(2, 4, 17) &
+            edge_t(1, 3, 12), edge_t(3, 6, 31), edge_t(6, 7, 27), edge_t(7, 5, 11), edge_t(2, 5, 20), edge_t(1, 2, 16), &
+            edge_t(1, 4, 21), edge_t(3, 4, 28), edge_t(6, 4, 19), edge_t(7, 4, 23), edge_t(5, 4, 18), edge_t(2, 4, 17) &
         ]
     end
 
     function read_edges(path) result(edges)
         character(*), intent(in) :: path
-        type(edge), dimension(:), allocatable :: edges
+        type(edge_t), dimension(:), allocatable :: edges
         character(10 * N_VERTICES) :: line
         character(10), dimension(N_VERTICES) :: parsed_line
         integer :: i, j, w, edge_idx, iostat
@@ -149,7 +155,7 @@ contains
                 else
                     read(parsed_line(j), *) w
                     edge_idx = edge_idx + 1
-                    edges(edge_idx) = edge(i, j, w)
+                    edges(edge_idx) = edge_t(i, j, w)
                 end if
             end do
         end do
@@ -159,7 +165,7 @@ contains
     end
 
     subroutine sort_edges(edges)
-        type(edge), dimension(:), intent(inout) :: edges
+        type(edge_t), dimension(:), intent(inout) :: edges
         integer, dimension(:), allocatable :: weights
         integer(kind=int_size), dimension(:), allocatable :: index
         integer :: i
@@ -171,7 +177,7 @@ contains
     end
 
     pure function edge_weight_sum(edges)
-        type(edge), dimension(:), intent(in) :: edges
+        type(edge_t), dimension(:), intent(in) :: edges
         integer :: edge_weight_sum, i
         
         edge_weight_sum = 0
@@ -181,8 +187,8 @@ contains
     end
 
     function kruskall(edges) result(mst)
-        type(edge), dimension(:), intent(in) :: edges
-        type(edge), dimension(:), allocatable :: mst
+        type(edge_t), dimension(:), intent(in) :: edges
+        type(edge_t), dimension(:), allocatable :: mst
         integer :: i, mst_idx
 
         allocate(mst, mold=edges)
@@ -205,7 +211,7 @@ program p107
     use graph
     implicit none
     
-    type(edge), dimension(:), allocatable :: edges, edges1
+    type(edge_t), dimension(:), allocatable :: edges, edges1
     integer :: s, s1
 
     print "(A)", "Example case"
