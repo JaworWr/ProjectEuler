@@ -115,7 +115,7 @@ contains
     end
 
     subroutine print_edges(edges)
-        type(edge_t), dimension(:), allocatable :: edges
+        type(edge_t), dimension(:) :: edges
         integer :: i
 
         do i = 1, size(edges)
