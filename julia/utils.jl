@@ -63,4 +63,26 @@ function is_prime(x::Integer)
 end
 export is_prime
 
+function euclid(a::T, b::T)::Tuple{T, T, T} where {T<:Integer}
+    x = 1
+    y = 0
+    r = 0
+    s = 1
+
+    while b != 0
+        q, c = divrem(a, b)
+        a = b
+        b = c
+
+        x1 = r
+        y1 = s
+        r = x - q * r
+        s = y - q * s
+        x = x1
+        y = y1
+    end
+    (a, x, y)
+end
+export euclid
+
 end
