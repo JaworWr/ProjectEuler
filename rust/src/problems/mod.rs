@@ -17,5 +17,6 @@ mod p187;
 mod p411;
 mod p418;
 mod p50;
+mod p462;
 
-pub mod current_problem { pub use super::p50::solve; }
+pub mod current_problem { pub use super::p462::solve; }
