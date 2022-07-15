@@ -45,8 +45,8 @@ impl Fraction {
         if d < 0 { 
             d = -d;
         }
-        assert!(self.num % d == 0, "Numerator must be divisible by {}", d);
-        assert!(self.denom % d == 0, "Denominator must be divisible by {}", d);
+        debug_assert!(self.num % d == 0, "Numerator must be divisible by {}", d);
+        debug_assert!(self.denom % d == 0, "Denominator must be divisible by {}", d);
         Fraction {
             num: self.num / d,
             denom: self.denom / d,
@@ -56,6 +56,11 @@ impl Fraction {
     pub fn reduce(self) -> Fraction {
         let (d, _, _) = euclid(self.num, self.denom);
         self.reduce_by(d)
+    }
+
+    pub fn is_reduced(self) -> bool {
+        let (d, _, _) = euclid(self.num, self.denom);
+        d == 1
     }
 
     pub fn as_f64(self) -> f64 {
