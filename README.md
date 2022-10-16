@@ -1,7 +1,5 @@
 # ProjectEuler
-<p align="center>
-    <img src="https://projecteuler.net/profile/JaworWr.png">
-</p>
+![Project Euler badge](https://projecteuler.net/profile/JaworWr.png)
 
 This repository contains my solutions to some [Project Euler](https://projecteuler.net) problems, as well as utility functions I have used to solve these. To comply with the website rules, I am only publishing solutions to the first 100 problems.
 
