@@ -1,6 +1,9 @@
+use std::iter::Sum;
 use std::ops::{Add, Sub, Mul, Div, Neg};
 use std::cmp::Ordering;
 use std::fmt;
+
+use num_traits::{Zero, One};
 
 use crate::utils::euclid;
 
@@ -123,6 +126,38 @@ impl Div for Fraction {
 
     fn div(self, rhs: Self) -> Self::Output {
         self * rhs.inv().expect("Denominator must not be 0")
+    }
+}
+
+impl Zero for Fraction {
+    fn zero() -> Self {
+        Fraction { num: 0, denom: 1 }
+    }
+
+    fn is_zero(&self) -> bool {
+        self.num == 0
+    }
+}
+
+impl One for Fraction {
+    fn one() -> Self {
+        Fraction { num: 1, denom: 1 }
+    }
+
+    fn is_one(&self) -> bool {
+        self.num == self.denom
+    }
+}
+
+
+impl Sum for Fraction {
+    fn sum<I: Iterator<Item = Self>>(iter: I) -> Self {
+        let mut res = Self::zero();
+        for x in iter {
+            res = res + x;
+            res = res.reduce();
+        }
+        res
     }
 }
 
