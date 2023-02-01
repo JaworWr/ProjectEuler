@@ -8,6 +8,6 @@ edition = "2021"
 [dependencies]
 itertools = "*"
 ordered-float = "*"
-cached = "*"
+cached = { version = "*", default-features = false, features = ["proc_macro"] }
 num-traits = "*"
 lazy_static = "*"
