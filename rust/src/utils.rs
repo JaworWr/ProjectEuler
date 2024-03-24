@@ -1,6 +1,6 @@
 use std::ops::ShrAssign;
 
-use num_traits::{PrimInt, NumAssign, Unsigned, Signed};
+use num_traits::{PrimInt, NumAssign, Signed};
 
 pub struct Sieve {
     pub max: usize,
@@ -187,7 +187,7 @@ pub fn euclid<T: PrimInt + Signed>(mut a: T, mut b: T) -> (T, T, T) {
     (a, x, y)
 }
 
-pub fn isqrt<T: PrimInt + Unsigned>(x: T) -> (T, bool) {
+pub fn isqrt<T: PrimInt>(x: T) -> (T, bool) {
     let f = x
         .to_f64()
         .unwrap()
