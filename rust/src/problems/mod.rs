@@ -9,5 +9,6 @@ mod p37;
 mod p46;
 mod p47;
 mod p60;
+mod p75;
 
-pub mod current_problem { pub use super::p76::solve; }
+pub mod current_problem { pub use super::p75::solve; }
