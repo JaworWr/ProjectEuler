@@ -41,6 +41,11 @@ impl<T: Iterator> ProgressLogger<T> {
             inner,
         }
     }
+
+    fn ms_since_start(&self) -> f64 {
+        let now = Instant::now();
+        (now - self.start_time.unwrap()).as_millis() as f64 / 1000.
+    }
 }
 
 impl<T: Iterator> Iterator for ProgressLogger<T> {
@@ -52,15 +57,13 @@ impl<T: Iterator> Iterator for ProgressLogger<T> {
         if result.is_some() {
             self.ctr += 1;
             if self.ctr % self.step == 0 {
-                let now = Instant::now();
-                let since_start = (now - self.start_time.unwrap()).as_millis() as f64 / 1000.;
+                let since_start = self.ms_since_start();
                 eprintln!("{}: processed {:>w$}/{}, took {:>7.3} s", 
                     self.name, self.ctr, self.total, since_start, w = self.total.len());
             }
         }
         else {
-            let now = Instant::now();
-            let since_start = (now - self.start_time.unwrap()).as_millis() as f64 / 1000.;
+            let since_start = self.ms_since_start();
             eprintln!("{}: done, took {:.3} s", self.name, since_start);
         }
         result
